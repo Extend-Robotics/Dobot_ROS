@@ -528,16 +528,16 @@ void CRRobot::moveHandle(const ros::TimerEvent& tm,
 {
     control_msgs::FollowJointTrajectoryGoalConstPtr goal = handle.getGoal();
 
-    static const double SERVOJ_DURATION = 0.08;
+    static const double SERVOJ_DURATION = 0.4;
     double t = SERVOJ_DURATION * 1.5;
-    ros::Rate timer(1.0 / SERVOJ_DURATION);    // servoj发布频率
+    ros::Rate timer(1.0 / SERVOJ_DURATION);    // servoj Release frequency
     double t0 = ros::Time::now().toSec();
 
     try {
         for (int i = 0; i < goal->trajectory.points.size() - 1; i++) {
             trajectory_msgs::JointTrajectoryPoint interp_traj_begin = goal->trajectory.points[i];
             trajectory_msgs::JointTrajectoryPoint interp_traj_end = goal->trajectory.points[i + 1];
-            double real_time;    // 实际间隔时间
+            double real_time;    // actual interval
             double t1;
             t1 = ros::Time::now().toSec();
             real_time = t1 - t0;
