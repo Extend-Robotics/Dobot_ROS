@@ -528,7 +528,7 @@ void CRRobot::moveHandle(const ros::TimerEvent& tm,
 {
     control_msgs::FollowJointTrajectoryGoalConstPtr goal = handle.getGoal();
 
-    static const double SERVOJ_DURATION = 0.4;
+    static const double SERVOJ_DURATION = 0.08;
     double t = SERVOJ_DURATION * 1.5;
     ros::Rate timer(1.0 / SERVOJ_DURATION);    // servoj Release frequency
     double t0 = ros::Time::now().toSec();
@@ -541,10 +541,12 @@ void CRRobot::moveHandle(const ros::TimerEvent& tm,
             double t1;
             t1 = ros::Time::now().toSec();
             real_time = t1 - t0;
+            //std::cout << "Message in for loop " << interp_traj_end.time_from_start.toSec() - SERVOJ_DURATION << "+++ " << real_time << std::endl;
             while (real_time < interp_traj_end.time_from_start.toSec() - SERVOJ_DURATION) {
                 double time_index = real_time - interp_traj_begin.time_from_start.toSec();
                 std::vector<double> tmp = sample_traj(interp_traj_begin, interp_traj_end, time_index);
                 char cmd[100];
+                //std::cout << "Message is comming from the while loop " << interp_traj_end.time_from_start.toSec() - SERVOJ_DURATION << "+++ " << real_time << std::endl;
                 sprintf(cmd, "servoj(%0.3f,%0.3f,%0.3f,%0.3f,%0.3f,%0.3f,t=%0.3f)", tmp[0], tmp[1], tmp[2], tmp[3],
                         tmp[4], tmp[5], t);
                 int32_t err_id;
@@ -560,6 +562,7 @@ void CRRobot::moveHandle(const ros::TimerEvent& tm,
             last_traj.push_back(goal->trajectory.points[point_num - 1].positions[i] * 180 / M_PI);
         }
         char cmd[100];
+        //std::cout << "Message is comming from outside the while loop " << std::endl;
         sprintf(cmd, "servoj(%0.3f,%0.3f,%0.3f,%0.3f,%0.3f,%0.3f,t=%0.3f)", last_traj[0], last_traj[1], last_traj[2],
                 last_traj[3], last_traj[4], last_traj[5], t);
         int32_t err_id;

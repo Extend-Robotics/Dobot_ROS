@@ -275,39 +275,39 @@ std::string parserGetInBitsRequest2String(dobot_v4_bringup::GetInBits::Request& 
 std::string parserGetInRegsRequest2String(dobot_v4_bringup::GetInRegs::Request& request)
 {
     std::stringstream ss;
-    ss << "GetInRegs(request." << request.index << ", request." << request.addr << ", request." << request.count
-       << ", request." << request.valType << ")";
+    ss << "GetInRegs(" << request.index << ", " << request.addr << ", " << request.count
+       << ", " << request.valType << ")";
 
     return ss.str();
 }
 std::string parserGetCoilsRequest2String(dobot_v4_bringup::GetCoils::Request& request)
 {
     std::stringstream ss;
-    ss << "GetCoils(request." << request.index << ", request." << request.addr << ", request." << request.count << ")";
+    ss << "GetCoils(" << request.index << ", " << request.addr << ", " << request.count << ")";
 
     return ss.str();
 }
 std::string parserSetCoilsRequest2String(dobot_v4_bringup::SetCoils::Request& request)
 {
     std::stringstream ss;
-    ss << "SetCoils(request." << request.index << ", request." << request.addr << ", request." << request.count
-       << ", request." << request.valTab << ")";
+    ss << "SetCoils(" << request.index << ", " << request.addr << ", " << request.count
+       << ", " << request.valTab << ")";
 
     return ss.str();
 }
 std::string parserGetHoldRegsRequest2String(dobot_v4_bringup::GetHoldRegs::Request& request)
 {
     std::stringstream ss;
-    ss << "GetHoldRegs(request." << request.index << ", request." << request.addr << ", request." << request.count
-       << ", request." << request.valType << ")";
+    ss << "GetHoldRegs(" << request.index << ", " << request.addr << ", " << request.count
+       << ", " << request.valType << ")";
 
     return ss.str();
 }
 std::string parserSetHoldRegsRequest2String(dobot_v4_bringup::SetHoldRegs::Request& request)
 {
     std::stringstream ss;
-    ss << "SetHoldRegs(request." << request.index << ", request." << request.addr << ", request." << request.count
-       << ", request." << request.valTab << ", request." << request.valType << ")";
+    ss << "SetHoldRegs(" << request.index << ", " << request.addr << ", " << request.count
+       << ", " << request.valTab << ", " << request.valType << ")";
 
     return ss.str();
 }

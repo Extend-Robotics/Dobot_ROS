@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
 
         CRRobot robot(private_node, ss);
 
-        double rate_vale = private_node.param("JointStatePublishRate", 10);
+        double rate_vale = private_node.param("JointStatePublishRate", 100);
 
         robot.init();
         ros::Rate rate(rate_vale);
