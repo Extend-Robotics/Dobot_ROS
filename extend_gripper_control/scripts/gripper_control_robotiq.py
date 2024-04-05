@@ -24,17 +24,12 @@ rospy.wait_for_service("/dobot_v4_bringup/srv/EnableRobot")
 initialization = True
 prevValue = 0
 
+
 def dataCallback(msg):
     # Remaping Range [0,1] to [0,255]
-    if(msg.gripperDigital.data):
-        gripper_value = 255
-    else:
-        gripper_value = 0
-    if(gripper_global_variables.gripper_initialization):
-        gripper_global_variables.gripper_prev_state = gripper_value
-        gripper_global_variables.gripper_initialization = False
+    gripper_value = 255 * msg.gripperAnalog.data
 
-    if(gripper_value != gripper_global_variables.gripper_prev_state):
+    if(gripper_global_variables.gripper_data_count == 5):
         gripper_modbus_service = rospy.ServiceProxy("/dobot_v4_bringup/srv/SetHoldRegs", dobot_v4_bringup.srv.SetHoldRegs)
         gripper_modbus_data = SetHoldRegsRequest()
         gripper_modbus_data.index = 0
@@ -43,11 +38,14 @@ def dataCallback(msg):
         gripper_modbus_data.valTab = "{2304," + str(gripper_value) + ",60000}" # {2304:Actuation, Value of the gripper: open/close, Speed of the gripper:0-65535}
         gripper_modbus_data.valType = "U16"  #Data format: 16-bit Unsigned integer type
         gripper_modbus_service(gripper_modbus_data)
-        gripper_global_variables.gripper_prev_state = gripper_value
 
+        gripper_global_variables.gripper_data_count = 0
+    else:
+        gripper_global_variables.gripper_data_count += 1
 
 
 def EnableRobot():
+    time.sleep(2)
     clear_error_service = rospy.ServiceProxy("/dobot_v4_bringup/srv/ClearError", dobot_v4_bringup.srv.ClearError)
 
     clear_error_response = clear_error_service()
@@ -64,11 +62,7 @@ def EnableRobot():
 def InitializeGlobalVariables():
     gripper_global_variables.gripper_prev_state = 0
     gripper_global_variables.gripper_initialization = True
-
-
-# def Test():
-#     print(initialization)
-#     print(prevValue)
+    gripper_global_variables.gripper_data_count = 0
 
 
 if __name__ == '__main__':
