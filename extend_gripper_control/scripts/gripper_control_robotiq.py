@@ -67,7 +67,6 @@ def InitializeGlobalVariables():
 
 if __name__ == '__main__':
     InitializeGlobalVariables()
-    EnableRobot()
     #Configure the modbus
     modbus_create_service = rospy.ServiceProxy("/dobot_v4_bringup/srv/ModbusCreate", dobot_v4_bringup.srv.ModbusCreate)
     modbus_config = ModbusCreateRequest()
