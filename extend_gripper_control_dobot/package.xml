@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>extend_gripper_control</name>
+  <name>extend_gripper_control_dobot</name>
   <version>0.0.0</version>
   <description>The extend_gripper_control package</description>
 
