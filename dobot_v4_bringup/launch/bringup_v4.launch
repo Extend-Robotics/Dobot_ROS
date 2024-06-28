@@ -9,7 +9,7 @@
   <arg name="robotIp" doc="IP of the controller" default="192.168.5.1"/>
   <arg name="robotName" doc="Name of the controller" default=""/>
 
-  <node name="$(arg robotName)$(env DOBOT_TYPE)_robot" pkg="dobot_v4_bringup" type="dobot_v4_bringup" output="screen" >
+  <node name="$(arg robotName)$(env dobotType)_robot" pkg="dobot_v4_bringup" type="dobot_v4_bringup" output="screen" >
     <param name="num_nodes" type="int" value="1" />
     <param name="robot_node_name" type="str" value="$(arg robotName)"/>
     <param name="joint_publish_rate" type="double" value="50" />
