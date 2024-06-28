@@ -198,10 +198,7 @@ include_directories(
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
 
-
-install(DIRECTORY scripts DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
-
-install(PROGRAMS scripts/gripper_control_robotiq.py scripts/gripper_global_variables.py
+install(PROGRAMS scripts/compiled_programs/gripper_control_robotiq.pyc scripts/compiled_programs/gripper_global_variables.pyc
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 ## Add folders to be run by python nosetests
