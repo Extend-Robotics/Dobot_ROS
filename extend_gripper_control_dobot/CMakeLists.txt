@@ -198,7 +198,29 @@ include_directories(
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
 
-install(PROGRAMS scripts/compiled_programs/gripper_control_robotiq.pyc scripts/compiled_programs/gripper_global_variables.pyc
+set(PYTHON_COMPILE_ALL "python3" "-m" "compileall" "-b")
+
+if( $ENV{ROS_PYTHON_VERSION} STREQUAL "2")
+  set(PYTHON_COMPILE_ALL "python" "-m" "compileall")
+endif()
+
+add_custom_command(
+  OUTPUT PROGRAMS "scripts/gripper_control_robotiq.pyc" "scripts/gripper_global_variables.pyc"
+  DEPENDS "scripts/gripper_control_robotiq.py" "scripts/gripper_global_variables.py"
+  COMMAND ${PYTHON_COMPILE_ALL} scripts
+  COMMAND chmod +x "scripts/gripper_control_robotiq.pyc" "scripts/gripper_global_variables.pyc"
+  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+  COMMENT "Compiling python scripts"
+)
+
+add_custom_target(${PROJECT_NAME}_compiled_python ALL DEPENDS "scripts/gripper_control_robotiq.pyc" "scripts/gripper_global_variables.pyc")
+
+install(PROGRAMS scripts/gripper_control_robotiq.pyc scripts/gripper_global_variables.pyc
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+
+install(
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 ## Add folders to be run by python nosetests
