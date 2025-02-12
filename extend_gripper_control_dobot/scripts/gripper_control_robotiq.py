@@ -6,8 +6,8 @@ import sys
 import copy
 import rospkg
 import extend_msgs
-from extend_msgs.msg import GripperControl
-from std_msgs.msg import String
+from extend_msgs.msg import GripperControl, GripperResponse
+from std_msgs.msg import Header
 import dobot_v4_bringup.srv
 import time
 import gripper_global_variables
@@ -24,6 +24,11 @@ rospy.wait_for_service("/dobot_v4_bringup/srv/EnableRobot")
 initialization = True
 prevValue = 0
 
+def initialize():
+    #Initialize the Modbus service and the response publisher
+    pubGripperCommandRepublisher = rospy.Publisher('extend_gripper_republished_command',GripperControl,queue_size=1)
+    pubGripperResponse = rospy.Publisher('extend_gripper_response',GripperResponse,queue_size=1)
+    return pubGripperCommandRepublisher,pubGripperResponse
 
 def dataCallback(msg):
     # Remaping Range [0,1] to [0,255]
@@ -42,6 +47,21 @@ def dataCallback(msg):
         gripper_global_variables.gripper_data_count = 0
     else:
         gripper_global_variables.gripper_data_count += 1
+    
+    header = Header()
+    header.seq = 0
+    header.frame_id = ""
+    header.stamp = rospy.Time.now()
+
+    pubGripperCommandRepublisherData = GripperControl()
+    pubGripperCommandRepublisherData = msg
+    pubGripperCommandRepublisherData.header = header
+    pubGripperCommandRepublisher.publish(pubGripperCommandRepublisherData)
+
+    #Fetching the Gripper Response Joint States and Force
+    pubGripperResponseData = GripperResponse()
+    pubGripperResponseData.header = header
+    pubGripperResponse.publish(pubGripperResponseData)
 
 
 def EnableRobot():
@@ -67,6 +87,7 @@ def InitializeGlobalVariables():
 
 if __name__ == '__main__':
     InitializeGlobalVariables()
+    (pubGripperCommandRepublisher,pubGripperResponse) = initialize()  
     #Configure the modbus
     modbus_create_service = rospy.ServiceProxy("/dobot_v4_bringup/srv/ModbusCreate", dobot_v4_bringup.srv.ModbusCreate)
     modbus_config = ModbusCreateRequest()
