@@ -120,5 +120,5 @@ if __name__ == '__main__':
 
     EnableRobot()
     #Subscribe to Digital Gripper Data Stream from Unity
-    rospy.Subscriber("/extend_gripper_command", GripperControl, dataCallback)
+    rospy.Subscriber("/extend_gripper_command", GripperControl, dataCallback, queue_size=1)
     rospy.spin()
