@@ -218,10 +218,5 @@ add_custom_target(${PROJECT_NAME}_compiled_python ALL DEPENDS "scripts/gripper_c
 install(PROGRAMS scripts/gripper_control_robotiq.pyc scripts/gripper_global_variables.pyc
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
-
-
-install(
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
